@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import React from "react";
 import { GlobalStyle } from "../components/StyledComponents/backGround";
 import CustomButton from "../components/Button";
+import { Header, Logo, LogoLeft, LogoRight } from "../components/StyledComponents/Logo";
 
 const Main=()=>{
     const [weather,setWeather]=useState(null);
@@ -46,6 +47,10 @@ const Main=()=>{
     const bgimg=backGroundImg(weatherNow);
     return (
         <div>
+          <Header>
+          <Logo src='assets/wearTher.png'  />
+          <Logo src='assets/logoIll.png' />
+          </Header>
           <GlobalStyle bgimg={bgimg}/>
           {weather ? (
             <div>

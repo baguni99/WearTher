@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 const MultiUseButton = styled.button`
-    width:300px;
-    height:100px;
+    width:250px;
+    height:70px;
+    border-radius: 40px;
 `
 export const AddButton = styled(MultiUseButton)`
  

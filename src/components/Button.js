@@ -7,9 +7,9 @@ import { AddButton, ViewButton, DeleteButton, AddCommentButton, EditButton } fro
 const CustomButton =(props) => {
     switch(props.name) {
         case 'AddButton' :
-            return <AddButton onClick={props.onClickAddCodi}>이 날씨에 내가 입은 옷 등록하기</AddButton>;
+            return <AddButton onClick={props.onClickAddCodi}>이 날씨에 내가 입은 옷 알려주기</AddButton>;
         case 'ViewButton' :
-            return <ViewButton onClick={props.onClickViewCodi}>이 날씨에 뭐 입지?</ViewButton>;
+            return <ViewButton onClick={props.onClickViewCodi}>이런 날엔 뭐 입지?</ViewButton>;
         case 'DeleteButton' :
             return <DeleteButton onClcick={props.onClickDelete}>삭제</DeleteButton>
         case 'EditButton' :
