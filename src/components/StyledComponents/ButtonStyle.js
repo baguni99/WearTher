@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const MultiUseButton = styled.button`
-    width:250px;
+    width:180px;
     height:70px;
     border-radius: 40px;
 `
@@ -27,3 +27,12 @@ export const EditButton = styled(MultiUseButton)`
     width:24px;
     height:24px;
 `;
+
+export const CloseButton = styled(MultiUseButton)`
+    width:24px;
+    height:24px;
+`
+export const AddPostButton = styled(MultiUseButton)`
+    width:24px;
+    height:24px;
+`

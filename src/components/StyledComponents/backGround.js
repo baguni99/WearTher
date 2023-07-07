@@ -1,5 +1,5 @@
 //main화면의 배경을 만드는 컴포넌트
-import styled, { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
     body {

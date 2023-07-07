@@ -1,17 +1,17 @@
-import { Route } from "react-router-dom";
-import { Routes } from "react-router-dom";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Main from "../pages/Main";
+import PostPage from "../pages/Posts";
 
-
-const Router = () => {
+const AppRouter = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/Posts" element={<PostPage />} />
+        
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 };
 
-export default Router;
+export default AppRouter;

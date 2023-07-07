@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import { GlobalStyle } from "../components/StyledComponents/backGround";
-import CustomButton from "../components/Button";
-import { Header, Logo, LogoLeft, LogoRight } from "../components/StyledComponents/Logo";
-
+import CustomButton from "../redux/modules/Button";
+import { Header, Logo } from "../components/StyledComponents/Logo";
+import { useDispatch, useSelector } from "react-redux";
+import Modal from "../components/components/Modal";
+import { useNavigate } from "react-router-dom";
 const Main=()=>{
     const [weather,setWeather]=useState(null);
     const [loading, setLoading] = useState(false);
-    
+    const modal = useSelector((state) => state.modal.show);
     const getWeatherByCurrentLocation = async(lat,lon)=>{ //비동기적으로 처리
 
     let url = `http://api.openweathermap.org/data/2.5/weather?lat=37.5665&lon=126.9780&APPID=b3bd3a62a36638732c39683a390282b0`
@@ -45,6 +47,11 @@ const Main=()=>{
       }
     }
     const bgimg=backGroundImg(weatherNow);
+    const modalShow = useSelector((state) => state.modal.show);
+
+    const dispatch = useDispatch();
+
+    
     return (
         <div>
           <Header>
@@ -61,8 +68,9 @@ const Main=()=>{
           ) : (
             <p>No weather information to read</p>
           )}
-          <CustomButton name="AddButton" /> 
-          <CustomButton name="ViewButton" /> 
+          <CustomButton name="AddButton"/> 
+          <CustomButton name="ViewButton"/>
+          {modalShow ? <Modal /> : null}
         </div>
       );
     };
