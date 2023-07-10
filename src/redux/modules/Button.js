@@ -4,19 +4,22 @@ import { AddButton, ViewButton, DeleteButton, AddCommentButton, EditButton, Clos
 import { useDispatch } from 'react-redux';
 import { handleCloseModal, handleShowModal } from '../../store/features/modalSlice';
 import { useNavigate } from 'react-router-dom';
+
 const CustomButton =(props) => {
     const dispatch = useDispatch(); //AddButton 클릭 -> 모달 : dispatch를 사용하여 showModal 액션 디스패치 !
-
+    const navigate = useNavigate(); 
+    
+    
     const showModal = ()=>{ //dispatch는 handleShowModal이라는 액션크리에이터를 가져오고 , 액션 크리에이터가 configurestore에서 액션개체를 만든다
         dispatch(handleShowModal());
     }
     const closeModal = () => {
         dispatch(handleCloseModal());
     }
-    const navigate = useNavigate(); 
+    
     const switchPage = () => {
     navigate("/Posts");
-  };
+    };
 
     switch(props.name) {
         case 'AddButton' :
@@ -31,9 +34,11 @@ const CustomButton =(props) => {
             return <AddCommentButton onClick={props.onClickAddComment}>등록</AddCommentButton>
         case 'closeButton' :
             return <CloseButton onClick={closeModal}>닫기</CloseButton>
-        case 'AddPostButton' :
-            return <AddPostButton onClick={props.onClickAddPost}>등록</AddPostButton>
-    }
-}
+       // case 'AddPostButton' :
+           // return <AddPostButton onClick={handleUpload}>등록</AddPostButton>
+       // case 'GoToOtherDay' :
+           // return <GoToOtherDay onClick={날짜선택 후 누르는 버튼}>확인</GoToOtherDay>
+    //}
+}};
 
 export default CustomButton;

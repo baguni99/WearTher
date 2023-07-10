@@ -5,7 +5,7 @@ import CustomButton from "../redux/modules/Button";
 import { Header, Logo } from "../components/StyledComponents/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/components/Modal";
-import { useNavigate } from "react-router-dom";
+
 const Main=()=>{
     const [weather,setWeather]=useState(null);
     const [loading, setLoading] = useState(false);
