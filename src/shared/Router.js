@@ -8,7 +8,6 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/Posts" element={<PostPage />} />
-        
       </Routes>
     </Router>
   );

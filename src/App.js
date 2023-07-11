@@ -1,6 +1,5 @@
-import './App.css';
-import Main from './pages/Main';
-import AppRouter from '../src/shared/Router';
+import "./App.css";
+import AppRouter from "../src/shared/Router";
 
 function App() {
   return (
