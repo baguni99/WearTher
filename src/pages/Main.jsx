@@ -5,10 +5,12 @@ import CustomButton from "../components/Button";
 import { Header, Logo } from "../components/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
-import { handleShowModal } from "../store/features/modalSlice";
+import { setWeatherNow } from "../redux/modules/weatherSlice";
 const Main = () => {
+  const dispatch = useDispatch();
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
+
   const modal = useSelector((state) => state.modal.show);
   //console.log("Modal state:", modalShow);
   const getWeatherByCurrentLocation = async (lat, lon) => {
@@ -39,7 +41,7 @@ const Main = () => {
 
   const weatherNow =
     weather && weather.main ? Math.floor(weather.main.temp - 273.15) : null;
-
+  dispatch(setWeatherNow(weatherNow));
   const backGroundImg = (weatherNow) => {
     if (weatherNow <= 0) {
       return "/assets/coldWeather.jpg";
@@ -55,7 +57,6 @@ const Main = () => {
   };
   const bgimg = backGroundImg(weatherNow);
   const modalShow = useSelector((state) => state.modal.show);
-  const dispatch = useDispatch();
 
   return (
     <div>

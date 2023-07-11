@@ -10,10 +10,7 @@ import {
   AddPostButton,
 } from "./ButtonStyle";
 import { useDispatch } from "react-redux";
-import {
-  handleCloseModal,
-  handleShowModal,
-} from "../store/features/modalSlice";
+import { handleCloseModal, handleShowModal } from "../redux/modules/modalSlice";
 import { useNavigate } from "react-router-dom";
 import { db, storage } from "../services/firebase/config";
 import { collection, addDoc } from "firebase/firestore";
@@ -67,11 +64,21 @@ const CustomButton = ({ name, title, post, photo }) => {
       // 업로드 완료 후 실행될 코드
       // 이미지 URL 가져오기
       const downloadURL = await getDownloadURL(storageRef);
+
+      //날씨 범위에 따라 나누고 파이어베이스에 같이 저장
+      let tempRange = "";
+      if (weatherNow <= 0) tempRange = "cold";
+      else if (weatherNow <= 10) tempRange = "cool";
+      else if (weatherNow <= 20) tempRange = "nice";
+      else if (weatherNow <= 30) tempRange = "warm";
+      else tempRange = "hot";
+
       // Firestore에 post 추가
       const docRef = await addDoc(collection(db, "posts"), {
         title: title,
         content: post,
         image: downloadURL, // 업로드된 이미지의 URL
+        temperature: tempRange,
       });
       console.log("입력성공: ", docRef.id);
     } catch (error) {
