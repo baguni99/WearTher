@@ -1,9 +1,20 @@
 //게시글을 볼 수 있는 페이지
-import React from "react";
 import { Logo } from "../components/Logo";
 import { Header } from "../components/Logo";
 import CustomButton from "../components/Button";
+import React, { useEffect, useState } from "react";
+import { collection, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../services/firebase/config";
 const PostPage = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const data = await getDocs(collection(db, "posts"));
+      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getPosts();
+  }, []);
   return (
     <div>
       <Header>
@@ -15,6 +26,15 @@ const PostPage = () => {
       </div>
       <input type="date" min={"yyyy-mm-dd"} />
       <CustomButton name="GoToOtherDay">go</CustomButton>
+      <div className="postComponents">
+        {posts.map((post) => (
+          <div key={post.id}>
+            <img src={post.image} alt={post.title} />
+            <h2>{post.title}</h2>
+            <p>{post.content}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
