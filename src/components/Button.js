@@ -8,6 +8,7 @@ import {
   EditButton,
   CloseButton,
   AddPostButton,
+  GoToOtherDayButton,
 } from "./ButtonStyle";
 import { useDispatch } from "react-redux";
 import { handleCloseModal, handleShowModal } from "../redux/modules/modalSlice";
@@ -15,10 +16,12 @@ import { useNavigate } from "react-router-dom";
 import { db, storage } from "../services/firebase/config";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-
-const CustomButton = ({ name, title, post, photo }) => {
+import { useSelector } from "react-redux";
+import { selectWeatherNow } from "../redux/modules/weatherSlice";
+const CustomButton = ({ name, title, post, photo, setPost }) => {
   const dispatch = useDispatch(); //AddButton 클릭 -> 모달 : dispatch를 사용하여 showModal 액션 디스패치 !
   const navigate = useNavigate();
+  const weatherNow = useSelector(selectWeatherNow);
 
   //console.log("show 상태:", modalShow);
 
@@ -66,13 +69,8 @@ const CustomButton = ({ name, title, post, photo }) => {
       const downloadURL = await getDownloadURL(storageRef);
 
       //날씨 범위에 따라 나누고 파이어베이스에 같이 저장
-      let tempRange = "";
-      if (weatherNow <= 0) tempRange = "cold";
-      else if (weatherNow <= 10) tempRange = "cool";
-      else if (weatherNow <= 20) tempRange = "nice";
-      else if (weatherNow <= 30) tempRange = "warm";
-      else tempRange = "hot";
-
+      console.log("현재날씨는: ", weatherNow);
+      const tempRange = getTempCategory(weatherNow);
       // Firestore에 post 추가
       const docRef = await addDoc(collection(db, "posts"), {
         title: title,
@@ -84,6 +82,29 @@ const CustomButton = ({ name, title, post, photo }) => {
     } catch (error) {
       console.error("입력오류!:", error);
     }
+  };
+  const getTempCategory = (temperature) => {
+    if (temperature <= 0) return "cold";
+    else if (temperature > 0 && temperature <= 10) return "cool";
+    else if (temperature > 10 && temperature <= 20) return "nice";
+    else if (temperature > 20 && temperature <= 30) return "warm";
+    else return "hot";
+  };
+  const handleGoToOtherDay = async () => {
+    //날씨API를 사용!!(5일간의 날씨)
+    const response = await fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?lat=37.5665&lon=126.9780&APPID=b3bd3a62a36638732c39683a390282b0` //다른 날짜 날씨 보여주는 api 가져오기
+    );
+    const data = await response.json();
+    const temperature = data.list[0].main.temp - 273.15; //평균기온으로 하는 법
+    console.log("Temperature: ", temperature); // 현재 온도 출력
+
+    const tempCategory = getTempCategory(temperature);
+    console.log("Temp Category: ", tempCategory);
+    const filteredPosts = post.filter(
+      (post) => post.temperature === tempCategory
+    );
+    setPost(filteredPosts);
   };
   switch (name) {
     case "AddButton":
@@ -104,8 +125,12 @@ const CustomButton = ({ name, title, post, photo }) => {
       return <CloseButton onClick={closeModal}>닫기</CloseButton>;
     case "AddPostButton":
       return <AddPostButton onClick={() => uploadImage()}>등록</AddPostButton>;
-    // case 'GoToOtherDay' :
-    // return <GoToOtherDay onClick={날짜선택 후 누르는 버튼}>확인</GoToOtherDay>
+    case "GoToOtherDayButton":
+      return (
+        <GoToOtherDayButton onClick={handleGoToOtherDay}>
+          확인
+        </GoToOtherDayButton>
+      );
     default:
       return null;
     //}

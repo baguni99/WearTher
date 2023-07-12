@@ -25,6 +25,10 @@ const Main = () => {
     console.log("현재 날씨는?", data);
   };
 
+  // weatherNow 값을 설정
+  const weatherNow =
+    weather && weather.main ? Math.floor(weather.main.temp - 273.15) : null;
+
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -39,8 +43,6 @@ const Main = () => {
     );
   }, []);
 
-  const weatherNow =
-    weather && weather.main ? Math.floor(weather.main.temp - 273.15) : null;
   dispatch(setWeatherNow(weatherNow));
   const backGroundImg = (weatherNow) => {
     if (weatherNow <= 0) {

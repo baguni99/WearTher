@@ -3,18 +3,41 @@ import { Logo } from "../components/Logo";
 import { Header } from "../components/Logo";
 import CustomButton from "../components/Button";
 import React, { useEffect, useState } from "react";
-import { collection, getDoc, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase/config";
+import { query, where } from "firebase/firestore";
+
 const PostPage = () => {
   const [posts, setPosts] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
-    const getPosts = async () => {
-      const data = await getDocs(collection(db, "posts"));
-      setPosts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, "posts"));
+      const allPosts = querySnapshot.docs.map((doc) => doc.data());
+      setPosts(allPosts);
     };
-    getPosts();
+
+    fetchData();
   }, []);
+  //사용자가 날짜를 선택했을 때 실행
+  // const handleDateChange = (e) => {
+  //   setSelectedDate(e.target.value);
+  // };
+  // const coldPosts = posts.filter((post) => post.temperature === "cold");
+  // const coolPosts = posts.filter((post) => post.temperature === "cool");
+  // const nicePosts = posts.filter((post) => post.temperature === "nice");
+  // const warmPosts = posts.filter((post) => post.temperature === "warm");
+  // const hotPosts = posts.filter((post) => post.temperature === "hot");
+
+  //오늘 날짜 가져오기
+  const today = new Date();
+  const minDate = today.toISOString().split("T")[0];
+
+  //5일 후의 날짜까지만 가져오기
+  const maxDate = new Date();
+  maxDate.setDate(today.getDate() + 5);
+  const maxDateStr = maxDate.toISOString().split("T")[0];
   return (
     <div>
       <Header>
@@ -24,8 +47,8 @@ const PostPage = () => {
       <div>
         날씨 예보는 변동될 수 있으니, 실제 날씨에 따라 옷을 선택하시기 바랍니다.
       </div>
-      <input type="date" min={"yyyy-mm-dd"} />
-      <CustomButton name="GoToOtherDay">go</CustomButton>
+      <input type="date" min={minDate} max={maxDateStr} />
+      <CustomButton name="GoToOtherDayButton" post={posts} setPost={setPosts} />
       <div className="postComponents">
         {posts.map((post) => (
           <div key={post.id}>
