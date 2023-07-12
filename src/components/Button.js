@@ -9,6 +9,7 @@ import {
   CloseButton,
   AddPostButton,
   GoToOtherDayButton,
+  WatchDetailButton,
 } from "./ButtonStyle";
 import { useDispatch } from "react-redux";
 import { handleCloseModal, handleShowModal } from "../redux/modules/modalSlice";
@@ -18,11 +19,23 @@ import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { useSelector } from "react-redux";
 import { selectWeatherNow } from "../redux/modules/weatherSlice";
-const CustomButton = ({ name, title, post, photo, setPost }) => {
+import {
+  handleCloseDetailModal,
+  handleShowDetailModal,
+} from "../redux/modules/detailSlice";
+const CustomButton = ({ name, title, post, photo, setPost, onClick }) => {
   const dispatch = useDispatch(); //AddButton 클릭 -> 모달 : dispatch를 사용하여 showModal 액션 디스패치 !
   const navigate = useNavigate();
   const weatherNow = useSelector(selectWeatherNow);
 
+  const showDetailModal = () => {
+    console.log("showDetailModal 잘 작동합니다");
+    dispatch(handleShowDetailModal());
+  };
+  const closeDetailModal = () => {
+    console.log("closeDetailModal 잘 됩니다.");
+    dispatch(handleCloseDetailModal());
+  };
   //console.log("show 상태:", modalShow);
 
   const showModal = () => {
@@ -131,6 +144,8 @@ const CustomButton = ({ name, title, post, photo, setPost }) => {
           확인
         </GoToOtherDayButton>
       );
+    case "watchDetailButton":
+      return <WatchDetailButton onClick={onClick}>상세보기</WatchDetailButton>;
     default:
       return null;
     //}

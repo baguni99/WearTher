@@ -5,11 +5,12 @@ import CustomButton from "../components/Button";
 import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase/config";
-import { query, where } from "firebase/firestore";
+import DetailModal from "../components/DetailModal";
 
 const PostPage = () => {
   const [posts, setPosts] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [detailModalOpen, setDetailModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,15 +21,16 @@ const PostPage = () => {
 
     fetchData();
   }, []);
-  //사용자가 날짜를 선택했을 때 실행
-  // const handleDateChange = (e) => {
-  //   setSelectedDate(e.target.value);
-  // };
-  // const coldPosts = posts.filter((post) => post.temperature === "cold");
-  // const coolPosts = posts.filter((post) => post.temperature === "cool");
-  // const nicePosts = posts.filter((post) => post.temperature === "nice");
-  // const warmPosts = posts.filter((post) => post.temperature === "warm");
-  // const hotPosts = posts.filter((post) => post.temperature === "hot");
+
+  const openDetailModal = (post) => {
+    setSelectedPost(post);
+    setDetailModalOpen(true);
+  };
+
+  const closeDetailModal = () => {
+    setSelectedPost(null);
+    setDetailModalOpen(false);
+  };
 
   //오늘 날짜 가져오기
   const today = new Date();
@@ -55,9 +57,16 @@ const PostPage = () => {
             <img src={post.image} alt={post.title} />
             <h2>{post.title}</h2>
             <p>{post.content}</p>
+            <CustomButton
+              name="watchDetailButton"
+              onClick={() => openDetailModal(post)}
+            />
           </div>
         ))}
       </div>
+      {detailModalOpen && (
+        <DetailModal post={selectedPost} closeDetailModal={closeDetailModal} />
+      )}
     </div>
   );
 };

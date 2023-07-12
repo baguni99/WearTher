@@ -37,3 +37,7 @@ export const GoToOtherDayButton = styled(MultiUseButton)`
   width: 24px;
   height: 24px;
 `;
+export const WatchDetailButton = styled(MultiUseButton)`
+  width: 24px;
+  height: 24px;
+`;
