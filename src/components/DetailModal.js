@@ -1,6 +1,14 @@
 //상세보기 버튼 click -> 모달창이 뜸 -> 모달창 안에 post.image , post.title, post.content
 
 import React from "react";
+import {
+  DetailModalBox,
+  DetailModalCloseButton,
+  DetailModalContainer,
+  DetailModalContent,
+  DetailModalImg,
+  DetailModalTitle,
+} from "./DetailModalStyle";
 
 const DetailModal = ({ post, closeDetailModal }) => {
   if (!post) {
@@ -8,16 +16,16 @@ const DetailModal = ({ post, closeDetailModal }) => {
     return null;
   } else
     return (
-      <div>
-        <div className="detailPost">
+      <DetailModalContainer>
+        <DetailModalBox>
           <div key={post.id}>
-            <img src={post.image} alt={post.title} />
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-            <button onClick={closeDetailModal}>닫기</button>
+            <DetailModalImg src={post.image} alt={post.title} />
+            <DetailModalTitle>{post.title}</DetailModalTitle>
+            <DetailModalContent>{post.content}</DetailModalContent>
+            <DetailModalCloseButton onClick={closeDetailModal} />
           </div>
-        </div>
-      </div>
+        </DetailModalBox>
+      </DetailModalContainer>
     );
 };
 export default DetailModal;

@@ -6,19 +6,24 @@ import { Header, Logo } from "../components/Logo";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "../components/Modal";
 import { setWeatherNow } from "../redux/modules/weatherSlice";
+import {
+  MainTitle,
+  MessageBubble1,
+  MessageBubble2,
+  MainItems,
+} from "../components/Text";
+import { MainButtons } from "../components/ButtonStyle";
 const Main = () => {
   const dispatch = useDispatch();
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const apiURL = process.env.REACT_APP_API_URL;
   const modal = useSelector((state) => state.modal.show);
   //console.log("Modal state:", modalShow);
   const getWeatherByCurrentLocation = async (lat, lon) => {
     //비동기적으로 처리
-
-    let url = `http://api.openweathermap.org/data/2.5/weather?lat=37.5665&lon=126.9780&APPID=b3bd3a62a36638732c39683a390282b0`;
     setLoading(true);
-    let response = await fetch(url); //await을 쓰려면 async로 함수 선언해야함
+    let response = await fetch(apiURL); //await을 쓰려면 async로 함수 선언해야함
     let data = await response.json(); //fetch를 쓸 땐 항상 json과 세트
     setWeather(data);
     setLoading(false);
@@ -67,19 +72,22 @@ const Main = () => {
         <Logo src="assets/logoIll.png" />
       </Header>
       <GlobalStyle bgimg={bgimg} />
-      {weather ? (
-        <div>
-          <h1>현재 날씨는...</h1>
-          <p>{weatherNow} °C</p>
-          <p>{weather.weather[0].description}</p>
-        </div>
-      ) : (
-        <p>No weather information to read</p>
-      )}
-
-      <CustomButton name="AddButton" />
-      <CustomButton name="ViewButton" />
-      {modalShow ? <Modal /> : null}
+      <MainItems>
+        {weather ? (
+          <div>
+            <MainTitle>Today's Weather</MainTitle>
+            <MessageBubble1>{weatherNow} °C</MessageBubble1>
+            <MessageBubble2>{weather.weather[0].description}</MessageBubble2>
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
+        <MainButtons>
+          <CustomButton name="AddButton" />
+          <CustomButton name="ViewButton" />
+        </MainButtons>
+        {modalShow ? <Modal /> : null}
+      </MainItems>
     </div>
   );
 };

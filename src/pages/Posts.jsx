@@ -6,6 +6,16 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../services/firebase/config";
 import DetailModal from "../components/DetailModal";
+import { GlobalStyle } from "../components/BackGround";
+import {
+  PostContainer,
+  PostContent,
+  PostImage,
+  PostTitle,
+  PostComponents,
+  WarningMessage,
+  InputDate,
+} from "../components/PostPage";
 
 const PostPage = () => {
   const [posts, setPosts] = useState([]);
@@ -40,30 +50,33 @@ const PostPage = () => {
   const maxDate = new Date();
   maxDate.setDate(today.getDate() + 5);
   const maxDateStr = maxDate.toISOString().split("T")[0];
+
   return (
     <div>
+      <GlobalStyle />
       <Header>
         <Logo src="assets/wearTher.png" />
         <Logo src="assets/logoIll.png" />
       </Header>
-      <div>
-        날씨 예보는 변동될 수 있으니, 실제 날씨에 따라 옷을 선택하시기 바랍니다.
-      </div>
-      <input type="date" min={minDate} max={maxDateStr} />
+      <WarningMessage>
+        ⛅날씨 예보는 변동될 수 있으니, 실제 날씨에 따라 옷을 선택하시기
+        바랍니다.
+      </WarningMessage>
+      <InputDate type="date" min={minDate} max={maxDateStr} />
       <CustomButton name="GoToOtherDayButton" post={posts} setPost={setPosts} />
-      <div className="postComponents">
+      <PostComponents>
         {posts.map((post) => (
-          <div key={post.id}>
-            <img src={post.image} alt={post.title} />
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
+          <PostContainer key={post.id}>
+            <PostImage src={post.image} alt={post.title} />
+            <PostTitle>{post.title}</PostTitle>
+
             <CustomButton
               name="watchDetailButton"
               onClick={() => openDetailModal(post)}
             />
-          </div>
+          </PostContainer>
         ))}
-      </div>
+      </PostComponents>
       {detailModalOpen && (
         <DetailModal post={selectedPost} closeDetailModal={closeDetailModal} />
       )}

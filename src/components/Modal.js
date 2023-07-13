@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import CustomButton from "./Button";
-import { useDispatch } from "react-redux";
-
+import { Container, TitleInput, ContentInput } from "./ModalStyle";
+import { ModalBox, ButtonWrapper } from "./ModalStyle";
 const Modal = () => {
   const [title, setTitle] = useState("");
   const [photo, setPhoto] = useState(null);
@@ -16,37 +16,48 @@ const Modal = () => {
   const handlePostChange = (e) => {
     setPost(e.target.value);
   };
+  const handleClick = () => {
+    setTitle("");
+    setPhoto(null);
+    setPost("");
+  };
 
   return (
-    <div>
-      <div className="post">
-        <input
-          type="text"
-          name="title"
-          placeholder="제목을 입력하세요"
-          onChange={handleTitleChange}
-        />
-        <br />
-        {/* 파일을 선택하면 onChange이벤트 발생하며 handleFileChange함수 호출됨 */}
-        <input type="file" name="photo" onChange={handleFileChange} />
-        <br />
-        <input
-          type="text"
-          name="post"
-          placeholder="한마디"
-          onChange={handlePostChange}
-        />
-      </div>
-      <div className="btn">
-        <CustomButton name="closeButton" />
-        <CustomButton
-          name="AddPostButton"
-          title={title}
-          post={post}
-          photo={photo}
-        />
-      </div>
-    </div>
+    <Container>
+      <ModalBox>
+        <div className="post">
+          <TitleInput
+            className="TitleInput"
+            type="text"
+            name="title"
+            placeholder="title"
+            value={title}
+            onChange={handleTitleChange}
+          />
+          <br />
+          {/* 파일을 선택하면 onChange이벤트 발생하며 handleFileChange함수 호출됨 */}
+          <input type="file" name="photo" onChange={handleFileChange} />
+          <br />
+          <ContentInput
+            type="text"
+            name="post"
+            placeholder="enter your comment..."
+            value={post}
+            onChange={handlePostChange}
+          />
+        </div>
+        <ButtonWrapper>
+          <CustomButton name="closeButton" />
+          <CustomButton
+            name="AddPostButton"
+            title={title}
+            post={post}
+            photo={photo}
+            onClick={handleClick}
+          />
+        </ButtonWrapper>
+      </ModalBox>
+    </Container>
   );
 };
 

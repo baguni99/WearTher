@@ -119,11 +119,12 @@ const CustomButton = ({ name, title, post, photo, setPost, onClick }) => {
     );
     setPost(filteredPosts);
   };
+
   switch (name) {
     case "AddButton":
-      return <AddButton onClick={showModal}>오늘 입은 옷 알려주기</AddButton>;
+      return <AddButton onClick={showModal}>Post My ootd</AddButton>;
     case "ViewButton":
-      return <ViewButton onClick={switchPage}>이런 날엔 뭐 입지?</ViewButton>;
+      return <ViewButton onClick={switchPage}>Other's ootd</ViewButton>;
     // case "DeleteButton":
     //   return <DeleteButton onClick={props.onClickDelete}>삭제</DeleteButton>;
     // case "EditButton":
@@ -135,17 +136,22 @@ const CustomButton = ({ name, title, post, photo, setPost, onClick }) => {
     //     </AddCommentButton>
     //   );
     case "closeButton":
-      return <CloseButton onClick={closeModal}>닫기</CloseButton>;
+      return <CloseButton onClick={closeModal} />;
     case "AddPostButton":
-      return <AddPostButton onClick={() => uploadImage()}>등록</AddPostButton>;
+      return (
+        <AddPostButton
+          onClick={async (e) => {
+            await uploadImage();
+            onClick(e);
+          }}
+        />
+      );
     case "GoToOtherDayButton":
       return (
-        <GoToOtherDayButton onClick={handleGoToOtherDay}>
-          확인
-        </GoToOtherDayButton>
+        <GoToOtherDayButton onClick={handleGoToOtherDay}>Go</GoToOtherDayButton>
       );
     case "watchDetailButton":
-      return <WatchDetailButton onClick={onClick}>상세보기</WatchDetailButton>;
+      return <WatchDetailButton onClick={onClick}>Detail</WatchDetailButton>;
     default:
       return null;
     //}
